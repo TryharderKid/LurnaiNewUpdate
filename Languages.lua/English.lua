@@ -77,5 +77,9 @@ return {
     AutoLift = "AutoLift",
     ["SpeedGrind(No Rebirth)"] = "Speed Grind (No Rebirth)",
     HideFrames = "HideFrames",
+    SelectPet = "Select Pet",
+    AutoOpenPets = "Auto Open Pets",
+    AutoOpenAuras = "Auto Open Auras",
+    SelectAura = "Select Aura",
     AutoUseProteinEgg = "Auto Protein Egg"
 }
