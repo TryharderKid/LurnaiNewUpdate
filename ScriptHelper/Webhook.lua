@@ -1,9 +1,14 @@
+-- Made By Havoc
+-- Webhook System for Lurnai
+-- Please Reframe from saying this is (IP LOGGING) their proof here that it doesn't log or anything
+
 local WebhookModule = {}
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 
 WebhookModule.Config = {
-    UpdateInterval = 300,
+    UpdateInterval = 3600,
+    Enabled = false,
     MaxRetries = 3,
     Debug = false,
 }
@@ -11,6 +16,7 @@ WebhookModule.Config = {
 local playerWebhooks = {}
 local initialStats = {}
 local lastStats = {}
+local updateLoop = nil
 
 local function getPlayerStats(player)
     local stats = {
@@ -210,10 +216,41 @@ function WebhookModule:UpdatePlayerStats(player)
     return true, "No changes to report"
 end
 
+function WebhookModule:SetUpdateInterval(hours)
+    if type(hours) == "number" and hours > 0 then
+        self.Config.UpdateInterval = hours * 3600
+        
+        if self.Config.Enabled then
+            self:StopAutoUpdates()
+            self:StartAutoUpdates()
+        end
+        
+        return true, "Update interval set to " .. hours .. " hour(s)"
+    end
+    
+    return false, "Invalid update interval"
+end
+
+function WebhookModule:SetEnabled(enabled)
+    if enabled and not self.Config.Enabled then
+        self.Config.Enabled = true
+        self:StartAutoUpdates()
+        return true, "Auto updates enabled"
+    elseif not enabled and self.Config.Enabled then
+        self.Config.Enabled = false
+        self:StopAutoUpdates()
+        return true, "Auto updates disabled"
+    end
+    
+    return true, "No change needed"
+end
+
 function WebhookModule:StartAutoUpdates()
-    spawn(function()
-        while true do
-            task.wait(WebhookModule.Config.UpdateInterval)
+    if updateLoop then return end
+    
+    updateLoop = task.spawn(function()
+        while self.Config.Enabled do
+            task.wait(self.Config.UpdateInterval)
             
             for userId, webhookUrl in pairs(playerWebhooks) do
                 local player = Players:GetPlayerByUserId(userId)
@@ -225,14 +262,19 @@ function WebhookModule:StartAutoUpdates()
     end)
 end
 
+function WebhookModule:StopAutoUpdates()
+    if updateLoop then
+        task.cancel(updateLoop)
+        updateLoop = nil
+    end
+end
+
 function WebhookModule:Initialize()
     Players.PlayerRemoving:Connect(function(player)
         if playerWebhooks[player.UserId] then
             self:UpdatePlayerStats(player)
         end
     end)
-    
-    self:StartAutoUpdates()
     
     return self
 end
