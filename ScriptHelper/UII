@@ -57,7 +57,7 @@ local function GetCountUnits()
 end
 
 local function GetNameUnits()
-  if game.PlaceId == 16146832113 then
+  if game.PlaceId == 3623096087 then
     local ListName = {}
     local UnitsFolder = Player.PlayerGui.Windows.Units.Holder.Main.Units
   
