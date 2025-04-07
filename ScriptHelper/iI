@@ -1,5 +1,6 @@
 
-local Game = game.PlaceId
+
+local Game = game.GameId
 local ArsenalID = 111958650
 local FortorID = 4948814458
 local fischid = 5750914919
@@ -22,17 +23,13 @@ if Game == ArsenalID then
 
 	Injected = true
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer -- Get the local player first
-
-local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlwaysAdvancing/Advancer-Z-V2/refs/heads/main/UI%20Library",true))()
-
+	local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/AlwaysAdvancing/Advancer-Z-V2/refs/heads/main/UI%20Library",true))()
 
 	local Window = Rayfield:CreateWindow({
-		Name = "Welcome " .. LocalPlayer.Name .. " | To 🔫 Advancer Z v2",  -- Adds an emoji!
-    		Icon = 1,
-    		LoadingTitle = "Advancer Z Load",
-    		LoadingSubtitle = "by Ocean_Water on Discord",
+		Name = "Advancer Z (Arsenal) (V 2.0)",
+		Icon = 1, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+		LoadingTitle = "Advancer Z Load",
+		LoadingSubtitle = "by Ocean_Water on Discord",
 		Theme = {
 			TextColor = Color3.fromRGB(230, 230, 230),
 
@@ -103,83 +100,64 @@ local Rayfield = loadstring(game:HttpGet("https://raw.githubusercontent.com/Alwa
 	})
 
 
-local Tab = Window:CreateTab("Main🔫", 4483362458)
-local GunSection = Tab:CreateSection("Toggle Features")
-
--- Infinite Ammo Toggle (Fixed)
-local infiniteAmmoEnabled = false
-local infiniteAmmoThread = nil
-local InfiniteAmmoToggle = Tab:CreateToggle({
-    Name = "Infinite Ammo",
-    CurrentValue = false,
-    Flag = "InfiniteAmmoToggle",
-    Callback = function(Value)
-        infiniteAmmoEnabled = Value
-        if Value then
-            infiniteAmmoThread = task.spawn(function()
-                while infiniteAmmoEnabled do
-                    game:GetService("Players").LocalPlayer.PlayerGui.GUI.Client.Variables.ammocount.Value = 999
-                    game:GetService("Players").LocalPlayer.PlayerGui.GUI.Client.Variables.ammocount2.Value = 999
-                    task.wait()
-                end
-            end)
-        else
-            if infiniteAmmoThread then task.cancel(infiniteAmmoThread) end
-        end
-    end,
-})
-
--- No Recoil Toggle (Fixed)
-local noRecoilEnabled = false
-local noRecoilThread = nil
-local NoRecoilToggle = Tab:CreateToggle({
-    Name = "No Recoil",
-    CurrentValue = false,
-    Flag = "NoRecoilToggle",
-    Callback = function(Value)
-        noRecoilEnabled = Value
-        if Value then
-            noRecoilThread = task.spawn(function()
-                while noRecoilEnabled do
-                    for _, v in pairs(game.ReplicatedStorage.Weapons:GetDescendants()) do
-                        if v.Name == "RecoilControl" then v.Value = 0 end
-                        if v.Name == "MaxSpread" then v.Value = 0 end
-                    end
-                    task.wait(5)
-                end
-            end)
-        else
-            if noRecoilThread then task.cancel(noRecoilThread) end
-        end
-    end,
-})
+	local Tab = Window:CreateTab("Main🔫", 4483362458) -- Title, Image
 
 
+	local GunSection = Tab:CreateSection("Gun Mods")
 
--- Fire Rate Toggle (Fixed)
-local fireRateEnabled = false
-local fireRateThread = nil
-local FireRateToggle = Tab:CreateToggle({
-    Name = "Firerate Mod",
-    CurrentValue = false,
-    Flag = "FireRateToggle",
-    Callback = function(Value)
-        fireRateEnabled = Value
-        if Value then
-            fireRateThread = task.spawn(function()
-                while fireRateEnabled do
-                    for _, v in pairs(game.ReplicatedStorage.Weapons:GetDescendants()) do
-                        if v.Name == "Auto" then v.Value = true end
-                        if v.Name == "FireRate" then v.Value = 0.02 end
-                    end
-                    task.wait(5)
-                end
-            end)
-        else
-            if fireRateThread then task.cancel(fireRateThread) end
-        end
-    end,
-})
+
+	local AmmoButton = Tab:CreateButton({
+		Name = "Infinite Ammo",
+		Callback = function()
+			local replicationstorage = game.ReplicatedStorage
+
+			while wait() do
+				game:GetService("Players").LocalPlayer.PlayerGui.GUI.Client.Variables.ammocount.Value = 999
+				game:GetService("Players").LocalPlayer.PlayerGui.GUI.Client.Variables.ammocount2.Value = 999
+			end
+
+		end,
+	})
+
+	local RecoilButton = Tab:CreateButton({
+		Name = "No Recoil",
+		Callback = function()
+			local replicationstorage = game.ReplicatedStorage
+
+			while wait(5) do
+
+				for i, v in pairs(replicationstorage.Weapons:GetDescendants()) do
+					if v.Name == "RecoilControl" then
+						v.Value = 0
+					end
+					if v.Name == "MaxSpread" then
+						v.Value = 0
+					end
+				end
+			end
+
+		end,
+	})
+
+	local FRButton = Tab:CreateButton({
+		Name = "Firerate Mod",
+		Callback = function()
+			local replicationstorage = game.ReplicatedStorage
+
+			while wait(5) do
+
+				for i, v in pairs(replicationstorage.Weapons:GetDescendants()) do
+					if v.Name == "Auto" then
+						v.Value = true
+					end
+					if v.Name == "FireRate" then
+						v.Value = 0.02
+					end
+				end
+			end
+
+		end,
+	})
 
 local ToggleCrazyRainbow = Tab:CreateToggle({
     Name = "Rainbow Gun(Crazy mode)",
@@ -201,7 +179,7 @@ local ToggleCrazyRainbow = Tab:CreateToggle({
                     for _, v in pairs(game.Workspace.Camera.Arms:GetDescendants()) do
                         if v:IsA('MeshPart') then 
                             v.Color = Color3.fromHSV(zigzag(c), 1, 1)
-                            c = c + 0.001 -- Increment c to change color over time
+                            c = c + 0.01 -- Increment c to change color over time
                         end
                     end
                 end
@@ -232,11 +210,105 @@ local Section = Tab:CreateSection("LocalPlayer")
 
 	local AimTab = Window:CreateTab("Aim", 4483362458)
 
+	local PlayerTab = Window:CreateTab("LocalPlayer", "scan-face")
+	local PlayerSection = PlayerTab:CreateSection("Player")
+
 	local RunService = game:GetService("RunService")
 	local Players = game:GetService("Players")
 	local UserInputService = game:GetService("UserInputService")
 	local LocalPlayer = Players.LocalPlayer
 	local camera = workspace.CurrentCamera
+
+	local aimbotEnabled = false
+	local holdingBind = false
+	local fovEnabled = false
+	local fovSize = 50
+	local targetPartOption = "Head"
+	local teamCheckEnabled = false
+	local sensitivity = 100
+
+	local fovCircle = Drawing.new("Circle")
+	fovCircle.Color = Color3.new(0.5, 0.5, 0.5)
+	fovCircle.Thickness = 2
+	fovCircle.Transparency = 1
+	fovCircle.Visible = false
+	fovCircle.Radius = fovSize
+
+	local function getClosestPlayer()
+		local closestPlayer = nil
+		local shortestDistance = math.huge
+		local screenCenter = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
+		local selectedPart = targetPartOption
+		if selectedPart == "Random" then
+			local parts = {"Head", "Torso", "HumanoidRootPart"}
+			selectedPart = parts[math.random(1, #parts)]
+		end
+
+		for _, player in ipairs(Players:GetPlayers()) do
+			if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild(selectedPart) then
+				if teamCheckEnabled then
+					if LocalPlayer.Team and player.Team and LocalPlayer.Team == player.Team then
+						continue
+
+					end
+				end
+
+				local part = player.Character:FindFirstChild(selectedPart)
+				local screenPos, onScreen = camera:WorldToViewportPoint(part.Position)
+				if onScreen then
+					local distance = (Vector2.new(screenPos.X, screenPos.Y) - screenCenter).Magnitude
+					if (not fovEnabled) or (distance <= fovCircle.Radius) then
+						if distance < shortestDistance then
+							shortestDistance = distance
+							closestPlayer = player
+						end
+					end
+				end
+			end
+			continue
+
+		end
+		return closestPlayer
+	end
+
+	local function aimAtTarget()
+		local target = getClosestPlayer()
+		if target and target.Character then
+			local partName = targetPartOption
+			if partName == "Random" then
+				local parts = {"Head", "Torso", "HumanoidRootPart"}
+				partName = parts[math.random(1, #parts)]
+			end
+			local targetPart = target.Character:FindFirstChild(partName)
+			if targetPart then
+				local newCF = CFrame.new(camera.CFrame.Position, targetPart.Position)
+				if sensitivity <= 0 then
+					return
+				elseif sensitivity < 100 then
+					camera.CFrame = camera.CFrame:Lerp(newCF, sensitivity / 100)
+				else
+					camera.CFrame = newCF
+				end
+			end
+		end
+	end
+
+	local ToggleAimbot = AimTab:CreateToggle({
+		Name = "Aimbot",
+		CurrentValue = false,
+		Flag = "Toggle1",
+		Callback = function(Value)
+			aimbotEnabled = Value
+		end,
+	})
+
+	local function getplrsname()
+		for i, v in pairs(game:GetChildren()) do
+			if v.ClassName == "Players" then
+				return v.Name
+			end
+		end
+	end
 
 	local SilentEnabled = false
 
@@ -289,147 +361,6 @@ local Section = Tab:CreateSection("LocalPlayer")
 		end
 	})
 
--- Main Configuration
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local camera = workspace.CurrentCamera
-
--- Aimbot Settings
-local aimbotEnabled = false
-local holdingBind = false
-local fovEnabled = false
-local fovSize = 50
-local targetPartOption = "Head"
-local teamCheckEnabled = false
-local sensitivity = 100
-
--- FOV Circle (visible only on PC)
-local fovCircle = Drawing.new("Circle")
-fovCircle.Color = Color3.new(0.5, 0.5, 0.5)
-fovCircle.Thickness = 2
-fovCircle.Transparency = 1
-fovCircle.Visible = false
-fovCircle.Radius = fovSize
-
--- Team Check Function (Arsenal-Specific)
-local function isEnemy(player)
-    if not teamCheckEnabled then
-        return true -- Target everyone if team check is off
-    end
-    
-    -- Arsenal uses TeamColor for teams
-    if player.TeamColor and LocalPlayer.TeamColor then
-        return player.TeamColor ~= LocalPlayer.TeamColor
-    end
-    
-    -- Fallback for games without TeamColor
-    return player.Team ~= LocalPlayer.Team
-end
-
--- Find the closest player (with team check)
-local function getClosestPlayer()
-    local closestPlayer = nil
-    local shortestDistance = math.huge
-    local screenCenter = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
-    local selectedPart = targetPartOption
-    
-    if selectedPart == "Random" then
-        selectedPart = ({"Head", "Torso", "HumanoidRootPart"})[math.random(1, 3)]
-    end
-
-    for _, player in ipairs(Players:GetPlayers()) do
-        -- Skip if invalid target
-        if player == LocalPlayer or not player.Character or not player.Character:FindFirstChild(selectedPart) then
-            continue
-        end
-
-        -- Skip teammates if team check is on
-        if not isEnemy(player) then
-            continue
-        end
-
-        -- Check if player is in FOV
-        local part = player.Character:FindFirstChild(selectedPart)
-        local screenPos, onScreen = camera:WorldToViewportPoint(part.Position)
-        
-        if onScreen then
-            local distance = (Vector2.new(screenPos.X, screenPos.Y) - screenCenter).Magnitude
-            if (not fovEnabled) or (distance <= fovCircle.Radius) then
-                if distance < shortestDistance then
-                    shortestDistance = distance
-                    closestPlayer = player
-                end
-            end
-        end
-    end
-    
-    return closestPlayer
-end
-
-
-
-
-
-
--- Input handling for both PC and Mobile
-RunService.RenderStepped:Connect(function()
-    fovCircle.Position = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
-    
-    -- Mobile aiming
-    if UserInputService.TouchEnabled and touchControls.isAiming and aimbotEnabled then
-        aimAtTarget()
-    end
-    
-    -- PC aiming
-    if holdingBind and aimbotEnabled then
-        aimAtTarget()
-    end
-end)
-
-
-	local function aimAtTarget()
-		local target = getClosestPlayer()
-		if target and target.Character then
-			local partName = targetPartOption
-			if partName == "Random" then
-				local parts = {"Head", "Torso", "HumanoidRootPart"}
-				partName = parts[math.random(1, #parts)]
-			end
-			local targetPart = target.Character:FindFirstChild(partName)
-			if targetPart then
-				local newCF = CFrame.new(camera.CFrame.Position, targetPart.Position)
-				if sensitivity <= 0 then
-					return
-				elseif sensitivity < 100 then
-					camera.CFrame = camera.CFrame:Lerp(newCF, sensitivity / 100)
-				else
-					camera.CFrame = newCF
-				end
-			end
-		end
-	end
-
-	local ToggleAimbot = AimTab:CreateToggle({
-		Name = "Aimbot",
-		CurrentValue = false,
-		Flag = "Toggle1",
-		Callback = function(Value)
-			aimbotEnabled = Value
-		end,
-	})
-
-	local function getplrsname()
-		for i, v in pairs(game:GetChildren()) do
-			if v.ClassName == "Players" then
-				return v.Name
-			end
-		end
-	end
-
-
-
 
 
 	local MobileAim = AimTab:CreateToggle({
@@ -457,23 +388,6 @@ end)
 			end
 		end,
 	})
-
-
-
--- UI Toggle for Team Check
-local TeamCheckToggle = AimTab:CreateToggle({
-    Name = "Team Check (Ignore Teammates)",
-    CurrentValue = false,
-    Flag = "TeamCheckToggle",
-    Callback = function(Value)
-        teamCheckEnabled = Value
-    end,
-})
-
-
-
--- Connect to render loop
-RunService.RenderStepped:Connect(handleTriggerbot)
 	local ToggleFOV = AimTab:CreateToggle({
 		Name = "FOV Visibility",
 		CurrentValue = false,
@@ -521,125 +435,17 @@ RunService.RenderStepped:Connect(handleTriggerbot)
 			sensitivity = Value
 		end,
 	})
-
-
--- Add these with your other aimbot settings
-local wallcheckEnabled = true
-local wallcheckMaxDistance = 500
-local wallcheckCooldown = 0.1 -- Reduce checks for mobile performance
-
--- Add these to your AimTab
-local WallcheckToggle = AimTab:CreateToggle({
-    Name = "Wall Check",
-    CurrentValue = true,
-    Flag = "WallcheckToggle",
+	local teamCheckEnabled = false
+local TeamCheckToggle = AimTab:CreateToggle({
+    Name = "Team Check (Ignore Teammates)",
+    CurrentValue = false,
+    Flag = "TeamCheckToggle",
     Callback = function(Value)
-        wallcheckEnabled = Value
+        teamCheckEnabled = Value
     end,
 })
 
-local WallcheckDistanceSlider = AimTab:CreateSlider({
-    Name = "Wall Check Range",
-    Range = {50, 1000},
-    Increment = 25,
-    Suffix = "studs",
-    CurrentValue = 500,
-    Flag = "WallcheckDistance",
-    Callback = function(Value)
-        wallcheckMaxDistance = Value
-    end,
-})
-
--- Optimized visibility check for Arsenal
-local function isVisible(targetPart)
-    if not targetPart or not wallcheckEnabled then return true end
-    
-    local cameraPos = camera.CFrame.Position
-    local targetPos = targetPart.Position
-    local distance = (targetPos - cameraPos).Magnitude
-    
-    -- Skip if too far (Arsenal maps aren't that big)
-    if distance > wallcheckMaxDistance then return false end
-    
-    -- Arsenal-specific ignore list
-    local rayParams = RaycastParams.new()
-    rayParams.FilterDescendantsInstances = {
-        LocalPlayer.Character,
-        workspace.Map,
-        workspace.Debris,
-        workspace.Effects,
-        workspace.Ignore,
-        workspace.Terrain,
-        workspace:FindFirstChild("GunParts") or nil,
-        workspace:FindFirstChild("Projectiles") or nil
-    }
-    rayParams.FilterType = Enum.RaycastFilterType.Blacklist
-    
-    -- Mobile performance optimization
-    if UserInputService.TouchEnabled then
-        rayParams.RespectCanCollide = false
-    end
-
-    local rayResult = workspace:Raycast(cameraPos, (targetPos - cameraPos).Unit * distance, rayParams)
-    
-    if not rayResult then return true end
-    
-    -- Special Arsenal case for head hitboxes
-    if targetPart.Name == "Head" and rayResult.Instance.Name == "HeadHB" then
-        return true
-    end
-    
-    return rayResult.Instance:IsDescendantOf(targetPart.Parent)
-end
-
--- Mobile-optimized target finding
-local lastWallcheckTime = 0
-local function getClosestPlayer()
-    -- Throttle wallchecks on mobile
-    if UserInputService.TouchEnabled and (tick() - lastWallcheckTime) < wallcheckCooldown then
-        return nil
-    end
-    lastWallcheckTime = tick()
-    
-    local closestPlayer = nil
-    local shortestDistance = math.huge
-    local screenCenter = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
-    local selectedPart = targetPartOption
-    
-    if selectedPart == "Random" then
-        selectedPart = ({"Head", "Torso", "HumanoidRootPart"})[math.random(1, 3)]
-    end
-
-    for _, player in ipairs(Players:GetPlayers()) do
-        if player == LocalPlayer or not player.Character then continue end
-        
-        -- Arsenal team check
-        if teamCheckEnabled and player.Team == LocalPlayer.Team then
-            continue
-        end
-
-        local part = player.Character:FindFirstChild(selectedPart)
-        if not part then continue end
-
-        local screenPos, onScreen = camera:WorldToViewportPoint(part.Position)
-        if onScreen then
-            local distance = (Vector2.new(screenPos.X, screenPos.Y) - screenCenter).Magnitude
-            if (not fovEnabled) or (distance <= fovCircle.Radius) then
-                if not wallcheckEnabled or isVisible(part) then
-                    if distance < shortestDistance then
-                        shortestDistance = distance
-                        closestPlayer = player
-                    end
-                end
-            end
-        end
-    end
-    
-    return closestPlayer
-end
-
-
-
+-- Update the getClosestPlayer function to properly handle team checks
 local function getClosestPlayer()
     local closestPlayer = nil
     local shortestDistance = math.huge
@@ -657,10 +463,10 @@ local function getClosestPlayer()
             continue
         end
 
-        -- Team check logic (FIXED)
+        -- Team check logic
         if teamCheckEnabled then
             -- Skip if the player is on the same team
-            if player.Team and LocalPlayer.Team and (player.Team == LocalPlayer.Team) then
+            if player.Team and LocalPlayer.Team and player.Team == LocalPlayer.Team then
                 continue
             end
         end
@@ -721,6 +527,33 @@ end
 		end,
 	})
 
+	local FlyToggle = Tab:CreateToggle({
+		Name = "Fly",
+		CurrentValue = false,
+		Flag = "FlyToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+		Callback = function(Value)
+			if Value == true then
+				startFly()
+			else 
+				endFly()
+			end
+		end,
+	})
+
+	local Slider = Tab:CreateSlider({
+		Name = "Fly speed",
+		Range = {1, 555},
+		Increment = 10,
+		Suffix = "FlySpeed",
+		CurrentValue = 16,
+		Flag = "SliderFly", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+		Callback = function(Value)
+			while wait(0.2) do
+				flySettings = {flyspeed=Value}
+			end
+
+		end,
+	})
 
 	local walkspeedEnabled = false
 	local freezeEnabled = false
@@ -1013,10 +846,6 @@ end
 
 
 end
-
-
-
-
 
 
 
@@ -1963,18 +1792,18 @@ if Injected == false then do
 		end,
 	})
 
-local SensSlider = AimTab:CreateSlider({
-    Name = "Sensitivity",  -- Fixed typo
-    Range = {1, 100},     -- Corrected syntax
-    Increment = 1,         -- More precise than Increment = 10
-    Suffix = "Sens",       -- Shorter suffix
-    Default = 50,          -- Some libraries use 'Default' instead of 'CurrentValue'
-    Flag = "SensSlider",   -- Optional (if saving settings)
-    Callback = function(Value)
-        sensitivity = Value
-        print("Sensitivity set to:", Value) -- Optional debug print
-    end,
-})
+	local SliderFOV = AimTab:CreateSlider({
+		Name = "FOV Size",
+		Range = {10, 300},
+		Increment = 5,
+		Suffix = "px",
+		CurrentValue = 50,
+		Flag = "SliderFOV",
+		Callback = function(Value)
+			fovSize = Value
+			fovCircle.Radius = fovSize
+		end,
+	})
 
 	local DropdownTarget = AimTab:CreateDropdown({
 		Name = "Target Part",
@@ -1997,25 +1826,17 @@ local SensSlider = AimTab:CreateSlider({
 		end,
 	})
 
-local SensSlider = AimTab:CreateSlider({
-    Name = "Sensitivity",
-    Range = {1, 100},
-    Increment = 1,  -- More precise control with 1% steps
-    Suffix = "%",  -- Clear percentage indicator
-    CurrentValue = sensitivity,  -- Use the variable instead of hardcoded value
-    Flag = "AimbotSensitivity",  -- More descriptive flag name
-    Callback = function(Value)
-        sensitivity = Value
-        -- Optional: Add visual feedback
-        Rayfield:Notify({
-            Title = "Sensitivity Updated",
-            Content = string.format("Set to %d%%", Value),
-            Duration = 1,
-            Image = 4483362458
-        })
-    end,
-})
-
+	local SliderSens = AimTab:CreateSlider({
+		Name = "Sensitivity",
+		Range = {0, 100},
+		Increment = 1,
+		Suffix = "%",
+		CurrentValue = 100,
+		Flag = "SliderSens",
+		Callback = function(Value)
+			sensitivity = Value
+		end,
+	})
 
 	UserInputService.InputBegan:Connect(function(input, gameProcessedEvent)
 		if gameProcessedEvent then return end
