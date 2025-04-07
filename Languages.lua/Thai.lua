@@ -77,5 +77,9 @@ return {
     AutoLift = "ออโต้ยก",
     ["SpeedGrind(No Rebirth)"] = "บดเร็ว (ไม่มีการเกิดใหม่)",
     HideFrames = "ซ่อนเฟรม",
-    AutoUseProteinEgg = "ออโต้ใช้ไข่โปรตีน"
+    AutoUseProteinEgg = "ออโต้ใช้ไข่โปรตีน",
+    SelectPet = "เลือกสัตว์เลี้ยง",
+    AutoOpenPets = "เปิดสัตว์เลี้ยงอัตโนมัติ",
+    AutoOpenAuras = "เปิดออร่าอัตโนมัติ",
+    SelectAura = "เลือกออร่า"
 }
