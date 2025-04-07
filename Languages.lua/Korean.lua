@@ -77,5 +77,9 @@ return {
     AutoLift = "자동 리프트",
     ["SpeedGrind(No Rebirth)"] = "빠른 그라인드 (환생 없음)",
     HideFrames = "프레임 숨기기",
-    AutoUseProteinEgg = "단백질 알 자동 사용"
+    AutoUseProteinEgg = "단백질 알 자동 사용",
+    SelectPet = "펫 선택",
+    AutoOpenPets = "펫 자동 열기",
+    AutoOpenAuras = "오라 자동 열기",
+    SelectAura = "오라 선택"
 }
