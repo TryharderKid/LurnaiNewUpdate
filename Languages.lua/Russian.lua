@@ -77,5 +77,9 @@ return {
     AutoLift = "Авто Поднятие",
     ["SpeedGrind(No Rebirth)"] = "Быстрый Гринд (Без Перерождения)",
     HideFrames = "Скрыть Рамки",
-    AutoUseProteinEgg = "Авто Использование Протеинового Яйца"
+    AutoUseProteinEgg = "Авто Использование Протеинового Яйца",
+    SelectPet = "Выбрать Питомца",
+    AutoOpenPets = "Автоматическое Открытие Питомцев",
+    AutoOpenAuras = "Автоматическое Открытие Аур",
+    SelectAura = "Выбрать Ауру"
 }
