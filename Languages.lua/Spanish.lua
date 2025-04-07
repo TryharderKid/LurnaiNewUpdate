@@ -77,7 +77,7 @@ return {
     AutoLift = "Auto Levantar",
     ["SpeedGrind(No Rebirth)"] = "Grindeo Rápido (Sin Renacimiento)",
     HideFrames = "Ocultar Marcos",
-    AutoUseProteinEgg = "Auto Usar Huevo de Proteína"
+    AutoUseProteinEgg = "Auto Usar Huevo de Proteína",
     SelectPet = "Seleccionar Mascota",
     AutoOpenPets = "Abrir Mascotas Automáticamente",
     AutoOpenAuras = "Abrir Auras Automáticamente",
