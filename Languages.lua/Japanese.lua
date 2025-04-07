@@ -77,5 +77,9 @@ return {
     AutoLift = "自動リフト",
     ["SpeedGrind(No Rebirth)"] = "高速周回（リバースなし）",
     HideFrames = "フレーム非表示",
-    AutoUseProteinEgg = "プロテイン卵自動使用"
+    AutoUseProteinEgg = "プロテイン卵自動使用",
+    SelectPet = "ペットを選択",
+    AutoOpenPets = "ペット自動オープン",
+    AutoOpenAuras = "オーラ自動オープン",
+    SelectAura = "オーラを選択"
 }
