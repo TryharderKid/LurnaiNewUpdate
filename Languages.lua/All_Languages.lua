@@ -1,4 +1,4 @@
-{
+return {
     ["English"] = "English",
     ["Spanish"] = "Español",
     ["Portuguese"] = "Português",
@@ -11,4 +11,3 @@
     ["Korean"] = "한국어",
     ["Thai"] = "ไทย"
 }
-
