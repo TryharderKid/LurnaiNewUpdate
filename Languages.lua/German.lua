@@ -77,5 +77,9 @@ return {
     AutoLift = "Auto Heben",
     ["SpeedGrind(No Rebirth)"] = "Schnelles Grinding (Keine Wiedergeburt)",
     HideFrames = "Rahmen ausblenden",
-    AutoUseProteinEgg = "Auto Protein-Ei verwenden"
+    AutoUseProteinEgg = "Auto Protein-Ei verwenden",
+    SelectPet = "Haustier Auswählen",
+    AutoOpenPets = "Haustiere Automatisch Öffnen",
+    AutoOpenAuras = "Auren Automatisch Öffnen",
+    SelectAura = "Aura Auswählen"
 }
